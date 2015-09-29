@@ -7,12 +7,12 @@ import java.lang.*;
  *
  * @author plowmanleah
  */
-public class pw_check
+public class pw_checkNode
 {
 
     private TrieNode root;
     
-    public pw_check() {
+    public pw_checkNode() {
         root = new TrieNode();
     }
  
@@ -68,16 +68,16 @@ public class pw_check
         
         Map<Character, TrieNode> child = root.child;
         TrieNode trieNode = null;
+        int countWord = 0;
         for(int i = 0; i < word.length(); i++)
         {
-            
             
             char subChar = word.charAt(i);
             if(child.containsKey(subChar))
             {
                 trieNode = child.get(subChar);
                 child = trieNode.child;
-                System.out.println("Password contains unusable word");
+                countWord++;
                 
             }
             
@@ -86,6 +86,9 @@ public class pw_check
                 checkForSymbol(word);
                 return null;
             }
+        }
+        if(countWord > 0){
+            System.out.println("Unusable word");
         }
         return trieNode;
     }
@@ -111,13 +114,15 @@ public class pw_check
         }
         char character;
         int countInt = 0;
+        int countLetter = 0;
         for(int i = 0; i < word.length(); i++)
         {
             character = word.charAt(i);
             if(Character.isLetter(character))
             {
-                
                 findbegLetter(word);
+                countLetter++;
+                return true;
             }
             if(Character.isDigit(character))
             {
@@ -128,7 +133,9 @@ public class pw_check
         {
             System.out.println("Your password must contain 1-2 numbers");
         }
-        
+        if(countLetter > 0 && countLetter < 3){
+            
+        }
         
         
         return false;
@@ -141,16 +148,13 @@ public class pw_check
             return 0;
         }
         int counter = 0;
-        char[] symbolsArr = {'!','@','$','%','&','*'};
-        for(int i = 0; i <word.length(); i++)
+        String symbols = "!@$%&*";
+        char[] charWord = word.toCharArray();
+        for(int i = 0; i <charWord.length; i++)
         {
-            for(int j = 0; j < symbolsArr.length;j++){
-                char aChar = word.charAt(i);
-                char symbol = symbolsArr[i];
-                if(aChar == symbol)
-                {
-                    counter++;
-                }
+            if(symbols.indexOf(String.valueOf(i)) >= 0)
+            {
+                counter++;
             }
             
         }
@@ -183,6 +187,5 @@ public class pw_check
         }
     
     }
+    
 }
-
-
